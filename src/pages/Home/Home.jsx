@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { CoinContext } from '../../context/CoinContext'
 import './Home.css'
+import {Link} from 'react-router-dom'
 
 const Home = () => {
 
@@ -11,6 +12,9 @@ const Home = () => {
 
   const inputHandler = (event) => {
     seInput(event.target.value);
+    if(event.target.value === "") {
+      setDisplayCoin(allCoin);
+    }
   }
 
   const searchHandler = async(event) => {
@@ -33,7 +37,13 @@ const Home = () => {
         <h1>Largest <br/> Crypto Marketplace</h1>
         <p>Welcome to the world's largest cryptocurrency marketplace. Sign up to explore more about cryptos.</p>
         <form onSubmit={searchHandler}>
-          <input onChange={inputHandler} value={input} type="text" placeholder='Search crypto..' required/>
+          <input onChange={inputHandler} list='coinlist' value={input} type="text" placeholder='Search crypto..' required/>
+
+          <datalist id='coinlist'>
+            {allCoin.map((item,index)=>(<option key={index} value={item.name} />))}
+            </datalist>
+
+
           <button type='submit'>Search</button>
         </form>
       </div>
@@ -47,7 +57,7 @@ const Home = () => {
         </div>
         {
           displayCoin.slice(0,10).map((item,index)=>(
-            <div className="table-layout" key={index}>
+            <Link to={`/coin/${item.id}`} className="table-layout" key={index}>
                <p>{item.market_cap_rank}</p>
                <div>
                 <img src={item.image} alt="" />
@@ -58,7 +68,7 @@ const Home = () => {
                <p className={item.price_change_percentage_24h>0? "green": "red" }>
                 {Math.floor(item.price_change_percentage_24h*100)/100}</p>
                <p className='market-cap' >{currency.symbol} {item.market_cap.toLocaleString()}</p>
-            </div>
+            </Link>
 
           ))
         }
