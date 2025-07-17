@@ -14,5 +14,5 @@ createRoot(document.getElementById('root')).render(
     </CoinContextProvider>
     
   </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 )
